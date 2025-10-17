@@ -1,6 +1,7 @@
 
 this is an easy picoctf web challenge
 
+basic explanation of SSTI:
 what is a template?
 https://en.wikipedia.org/wiki/Template_processor
 lets you dynnamically generate html pages based on templates
@@ -17,6 +18,8 @@ because the first name isn't passed into the template
 if they directly put user input into the template before it renders, that might create vulns 
 ex vuln code:
 `$output = $twig->render("Dear " . $_GET['name'])`
+
+for a more detailed explanation please look through [[my notes on SSTI's]]
 
 How to solve it:
 
