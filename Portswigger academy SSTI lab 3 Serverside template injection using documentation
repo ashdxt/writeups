@@ -1,0 +1,38 @@
+Going on the webpage and clicking on one of the items lets us  reflect user input by clicking edit template and then preview
+![[Pasted image 20251019001824.png]]
+
+
+
+![[Pasted image 20251017230214.png]]
+^this generates nothing, I assume one of them is causing an error and so I tested individually getting
+
+
+![[Pasted image 20251017230317.png]]
+^this looks like a javascript frame work 
+
+I tried fuzzing it with this and got an error
+
+![[Pasted image 20251017230144.png]]
+
+
+
+using chatgpt to search through the docs I get: ```
+```
+${ "freemarker.template.utility.Execute"?new()("id") }
+```
+which when previewed gets us 
+
+
+![[Pasted image 20251019001342.png]]
+
+which works!
+
+running preview on
+```
+${ "freemarker.template.utility.Execute"?new()("rm morale.txt") }
+```
+gets us the win!.
+![[Pasted image 20251019001541.png]]
+
+
+overall super simple lab.
